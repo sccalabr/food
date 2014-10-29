@@ -10,17 +10,83 @@ import nltk
 from urllib.request import urlopen
 from sys import argv
 
+testReviews = []
+trainingReviews = []
+
 def createOutPutFiles():
-    files = glob.glob("./training/*.html")
-    print(files)
+    files = glob.glob("./test/*.html")
+#     print(files)
     for file in files:
-        print(file)
-        txt = open(file)
+#         print(file)
+        txt = open(file, encoding='utf8')
         s= remove_tags(txt.read())
-        t = open("./trainingOut/" + file.replace("./training", ""), "w+")
-        print(s)
+        t = open("./testOut/" + file.replace("./test", ""), "w+")
+#         print(s)
         t.write(s)
 
+def remove_values_from_list(the_list, val):
+    return [value for value in the_list if value != val]
+
+# Written review is given its own index in the array. The next 4 indices
+# are the paragraphs of the review. If we need to join them later we can
+def createReviewArray():
+    files = glob.glob("./trainingOut/*.html")
+
+    for file in files:
+
+        txt = open(file, encoding='utf-8')
+        lines = txt.readlines()
+        
+        if '\n' in lines:
+            lines = remove_values_from_list(lines, '\n')
+        
+        trainingReviews.append(lines)
+    
+#     print("TRAINING")
+#     for r in trainingReviews:
+#         print(r)
+#         for attribute in r:
+#             print(attribute)
+#         print("\n===================")
+      
+      
+    files = glob.glob("./testOut/*.html")
+    
+    for testFile in files:
+        print(testFile)
+        txt = open(testFile, encoding='utf-8')
+        lines = txt.readlines()
+        
+        if '\n' in lines:
+            lines = remove_values_from_list(lines, '\n')
+        
+        testReviews.append(lines)
+    
+    
+#     print("TEST")
+#     for r in testReviews:
+#         print(r)
+#         for attribute in r:
+#             print(attribute)
+#         print("\n===================")
+        
+def showReviewListContents():
+    
+    print("TEST")
+    for r in testReviews:
+        print(r)
+        for attribute in r:
+            print(attribute)
+        print("\n===================")
+            
+            
+    print("TRAINING")
+    for r in trainingReviews:
+        print(r)
+        for attribute in r:
+            print(attribute)
+        print("\n===================")
+            
 def remove_tags(input_text):
     # convert in_text to a mutable object (e.g. list)
     s_list = list(input_text)
@@ -41,6 +107,6 @@ def remove_tags(input_text):
  
 #Now just pass an HTML formatted text through this function .It remove the tags and return the string
 if __name__ == '__main__':
-#     createOutPutFiles()
-    print("HI")
+    createReviewArray()
+
 
