@@ -12,6 +12,7 @@ from sys import argv
 
 testReviews = []
 trainingReviews = []
+happySadMap = {}
 
 def createOutPutFiles():
     files = glob.glob("./test/*.html")
@@ -27,6 +28,19 @@ def createOutPutFiles():
 def remove_values_from_list(the_list, val):
     return [value for value in the_list if value != val]
 
+def createHappySadMap():
+    files = glob.glob("./words/*.txt")
+
+    for file in files:
+        txt = open(file, encoding='utf-8')  
+        lines = txt.readlines()
+        
+        for line in lines:
+            part = line.split()
+            happySadMap[part[0]] = part[1].replace("\n", "")
+ 
+    
+
 # Written review is given its own index in the array. The next 4 indices
 # are the paragraphs of the review. If we need to join them later we can
 def createReviewArray():
@@ -41,13 +55,6 @@ def createReviewArray():
             lines = remove_values_from_list(lines, '\n')
         
         trainingReviews.append(lines)
-    
-#     print("TRAINING")
-#     for r in trainingReviews:
-#         print(r)
-#         for attribute in r:
-#             print(attribute)
-#         print("\n===================")
       
       
     files = glob.glob("./testOut/*.html")
@@ -62,13 +69,6 @@ def createReviewArray():
         
         testReviews.append(lines)
     
-    
-#     print("TEST")
-#     for r in testReviews:
-#         print(r)
-#         for attribute in r:
-#             print(attribute)
-#         print("\n===================")
         
 def showReviewListContents():
     
@@ -108,5 +108,6 @@ def remove_tags(input_text):
 #Now just pass an HTML formatted text through this function .It remove the tags and return the string
 if __name__ == '__main__':
     createReviewArray()
+    createHappySadMap()
 
 
